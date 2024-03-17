@@ -43,3 +43,12 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
+
+
+
+/*
+NODE_ENV=development
+PORT=5000
+DATABASE_URL=mongodb+srv://RESTART-UNIVERSITY-AUTH-SERVICE:Puaos1L7Lmk4dX2Y@cluster0.qahuo.mongodb.net/RESTART-UNIVERSITY-AUTH-SERVICE?retryWrites=true&w=majority&appName=Cluster0
+DEFAULT_STUDENT_PASS=sifat123456
+*/ 
