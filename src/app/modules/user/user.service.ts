@@ -30,11 +30,11 @@ const createStudent = async (student: IStudent, user: IUser) => {
     user.id = id;
     student.id = id;
 
-    // Create student using sesssin
+    // Create student using sesssin and get an array
     const newStudent = await Student.create([student], { session });
 
     if (!newStudent.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create student');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Student');
     }
     // set student _id (reference) into user.student
     user.student = newStudent[0]._id;
@@ -43,7 +43,7 @@ const createStudent = async (student: IStudent, user: IUser) => {
     const newUser = await User.create([user], { session });
 
     if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create User');
     }
     newUserAllData = newUser[0];
 
@@ -55,6 +55,7 @@ const createStudent = async (student: IStudent, user: IUser) => {
     throw error;
   }
 
+  // user ---> student  -----> academicSemester and acdemicFaculty and academicDepartment
   if (newUserAllData) {
     newUserAllData = await User.findOne({ id: newUserAllData.id }).populate({
       path: 'student',
