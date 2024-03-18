@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SortOrder } from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
@@ -8,6 +8,7 @@ import { IStudent, IStudentFilters } from "./student.interface";
 import { Student } from "./student.model";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from 'http-status';
+import { User } from "../user/user.model";
 
 
 const getAllStudents = async (
@@ -104,6 +105,8 @@ const getAllStudents = async (
         (updatedStudentData as any)[nameKey] = name[key as keyof typeof name];
       });
     }
+
+   
     if (guardian && Object.keys(guardian).length > 0) {
       Object.keys(guardian).forEach(key => {
         const guardianKey = `guardian.${key}` as keyof Partial<IStudent>; // `guardian.fisrtguardian`
@@ -127,12 +130,29 @@ const getAllStudents = async (
     return result;
   };
   
-  const deleteStudent = async (id: string): Promise<IStudent | null> => {
-    const result = await Student.findByIdAndDelete(id)
-      .populate('academicSemester')
-      .populate('academicDepartment')
-      .populate('academicFaculty');
-    return result;
+  const deleteStudent = async (id: string):Promise<IStudent | null> => {
+    const isExist = await Student.findOne({id})
+    if(!isExist) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User Not Found")
+    }
+    
+    const session = await mongoose.startSession();
+    try {
+      session.startTransaction();
+      // delete a student
+      const student = await Student.findOneAndDelete({id}, {session}) ;
+      if(!student) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Student Not Found")
+      }
+      // delete a user
+      await User.deleteOne({id});
+      session.commitTransaction();
+      session.endSession()
+    } catch (error) {
+      session.abortTransaction();
+      session.endSession()
+      throw error
+    }
   };
   
   export const StudentService = {
