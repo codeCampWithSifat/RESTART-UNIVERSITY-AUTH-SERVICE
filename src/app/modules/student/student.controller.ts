@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
@@ -58,6 +57,7 @@ const getAllStudents = catchAsync(async (req: Request, res: Response) => {
   const deleteStudent = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
   
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const result = await StudentService.deleteStudent(id);
   
     sendReponse<IStudent>(res, {
