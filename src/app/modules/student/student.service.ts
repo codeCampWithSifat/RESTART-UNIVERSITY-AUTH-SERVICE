@@ -130,7 +130,7 @@ const getAllStudents = async (
     return result;
   };
   
-  const deleteStudent = async (id: string):Promise<IStudent | null> => {
+  const deleteStudent = async (id: string):Promise<void> => {
     const isExist = await Student.findOne({id})
     if(!isExist) {
       throw new ApiError(httpStatus.NOT_FOUND, "User Not Found")

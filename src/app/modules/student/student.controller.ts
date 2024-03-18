@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
@@ -62,7 +64,7 @@ const getAllStudents = catchAsync(async (req: Request, res: Response) => {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Student deleted successfully !',
-      data: result,
+      // data: result,
     });
   });
   
