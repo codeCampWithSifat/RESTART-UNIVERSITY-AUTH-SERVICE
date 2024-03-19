@@ -6,9 +6,11 @@ import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { IStudent } from '../student/student.interface';
 import { IUser } from './user.interface';
 import { User } from './user.model';
-import { generateStudentId } from './user.utils';
+import { generateFacultyId, generateStudentId } from './user.utils';
 import { Student } from '../student/student.model';
 import httpStatus from 'http-status';
+import { IFaculty } from '../faculty/faculty.interface';
+import { Faculty } from '../faculty/faculty.model';
 
 const createStudent = async (student: IStudent, user: IUser) => {
   // default password
@@ -69,6 +71,59 @@ const createStudent = async (student: IStudent, user: IUser) => {
   return newUserAllData;
 };
 
+const createFaculty = async (faculty: IFaculty, user: IUser) => {
+  // set default password
+  if (!user.password) {
+    user.password = config.default_faculty_pass as string;
+  }
+  // set default role
+  user.role = 'faculty';
+
+  let newFacultyAllData = null;
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+    // generate faculty id
+    const id = await generateFacultyId();
+    user.id = id;
+    faculty.id = id;
+
+    // Create A Faculty With An Array
+    const newFaculty = await Faculty.create([faculty], { session });
+    if (!newFaculty.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Faculty ');
+    }
+    // set faculty reference in the user
+    user.faculty = newFaculty[0]._id;
+
+    const newUser = await User.create([user], { session });
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create User');
+    }
+    newFacultyAllData = newUser[0];
+
+    session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+
+  if (newFacultyAllData) {
+    newFacultyAllData = await User.findOne({
+      id: newFacultyAllData.id,
+    }).populate({
+      path: 'faculty',
+      populate: [{ path: 'academicDepartment' }, { path: 'academicFaculty' }],
+    });
+  }
+
+  return newFacultyAllData;
+};
+
 export const UserService = {
   createStudent,
+  createFaculty,
 };
