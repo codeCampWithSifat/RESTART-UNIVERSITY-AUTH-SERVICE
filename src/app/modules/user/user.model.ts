@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../../config';
 
 const userSchema = new Schema<IUser>(
   {
@@ -25,9 +27,9 @@ const userSchema = new Schema<IUser>(
       type: Schema.Types.ObjectId,
       ref: 'Faculty',
     },
-    admin : {
-      type : Schema.Types.ObjectId,
-      ref :"Admin",
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: 'Admin',
     },
   },
   {
@@ -37,4 +39,15 @@ const userSchema = new Schema<IUser>(
     },
   },
 );
+
+userSchema.pre('save', async function (next) {
+  // Hashing User Password
+  // console.log(this)
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
 export const User = model<IUser, UserModel>('User', userSchema);
