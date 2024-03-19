@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
-import { IManagementDepartment, ManagementDepartmentModel } from "./managementDepartment.interface";
+import { Schema, model } from 'mongoose';
+import {
+  IManagementDepartment,
+  ManagementDepartmentModel,
+} from './managementDepartment.interface';
 
 const ManagementDepartmentSchema = new Schema<
   IManagementDepartment,
@@ -17,7 +20,7 @@ const ManagementDepartmentSchema = new Schema<
     toJSON: {
       virtuals: true,
     },
-  }
+  },
 );
 
 export const ManagementDepartment = model<

@@ -9,7 +9,7 @@ router.get('/:id', FacultyController.getSingleFaculty);
 router.patch(
   '/:id',
   validateRequest(FacultyValidation.updateFacultyZodSchema),
-  FacultyController.updateFaculty
+  FacultyController.updateFaculty,
 );
 
 router.delete('/:id', FacultyController.deleteFaculty);

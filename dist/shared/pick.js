@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 // ["page", "limit", "sortBy", "sortOrder"]
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 const pick = (obj, keys) => {
-    const finalObject = {};
-    for (const key of keys) {
-        if (obj && Object.hasOwnProperty.call(obj, key)) {
-            finalObject[key] = obj[key];
-        }
+  const finalObject = {};
+  for (const key of keys) {
+    if (obj && Object.hasOwnProperty.call(obj, key)) {
+      finalObject[key] = obj[key];
     }
-    return finalObject;
+  }
+  return finalObject;
 };
 exports.default = pick;

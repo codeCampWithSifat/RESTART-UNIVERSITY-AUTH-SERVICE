@@ -13,7 +13,7 @@ router.delete('/:id', AdminController.deleteAdmin);
 router.patch(
   '/:id',
   validateRequest(AdminValidation.updateAdmin),
-  AdminController.updateAdmin
+  AdminController.updateAdmin,
 );
 
 export const AdminRoutes = router;

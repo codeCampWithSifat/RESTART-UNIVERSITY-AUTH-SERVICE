@@ -39,7 +39,6 @@ export const generateFacultyId = async (): Promise<string> => {
   return incrementedId;
 };
 
-
 export const findLastAdminId = async (): Promise<string | undefined> => {
   const lastFaculty = await User.findOne({ role: 'admin' }, { id: 1, _id: 0 })
     .sort({

@@ -6,7 +6,11 @@ import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { IStudent } from '../student/student.interface';
 import { IUser } from './user.interface';
 import { User } from './user.model';
-import { generateAdminId, generateFacultyId, generateStudentId } from './user.utils';
+import {
+  generateAdminId,
+  generateFacultyId,
+  generateStudentId,
+} from './user.utils';
 import { Student } from '../student/student.model';
 import httpStatus from 'http-status';
 import { IFaculty } from '../faculty/faculty.interface';
@@ -125,10 +129,9 @@ const createFaculty = async (faculty: IFaculty, user: IUser) => {
   return newFacultyAllData;
 };
 
-
 const createAdmin = async (
   admin: IAdmin,
-  user: IUser
+  user: IUser,
 ): Promise<IUser | null> => {
   // default password
   if (!user.password) {
@@ -186,5 +189,5 @@ const createAdmin = async (
 export const UserService = {
   createStudent,
   createFaculty,
-  createAdmin
+  createAdmin,
 };

@@ -8,7 +8,7 @@ export type IUser = {
   role: string;
   password: string;
   student?: Types.ObjectId | IStudent;
-  admin ?: Types.ObjectId | IAdmin;
-  faculty? : Types.ObjectId | IFaculty;
+  admin?: Types.ObjectId | IAdmin;
+  faculty?: Types.ObjectId | IFaculty;
 };
 export type UserModel = Model<IUser, Record<string, unknown>>;

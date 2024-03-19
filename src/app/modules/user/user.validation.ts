@@ -89,7 +89,6 @@ const createStudentZodSchema = z.object({
   }),
 });
 
-
 const createFacultyZodSchema = z.object({
   body: z.object({
     password: z.string().optional(),
@@ -150,7 +149,6 @@ const createFacultyZodSchema = z.object({
     }),
   }),
 });
-
 
 const createAdminZodSchema = z.object({
   body: z.object({
@@ -217,5 +215,5 @@ const createAdminZodSchema = z.object({
 export const UserValidation = {
   createStudentZodSchema,
   createFacultyZodSchema,
-  createAdminZodSchema
+  createAdminZodSchema,
 };
