@@ -40,13 +40,13 @@ const createStudent = async (student: IStudent, user: IUser) => {
 
     // Create student using sesssin and get an array
     const newStudent = await Student.create([student], { session });
-
+    // console.log(newStudent)
     if (!newStudent.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Student');
     }
     // set student _id (reference) into user.student
     user.student = newStudent[0]._id;
-
+    user.email = newStudent[0].email;
     //  create new User
     const newUser = await User.create([user], { session });
 
@@ -109,11 +109,11 @@ const createFaculty = async (faculty: IFaculty, user: IUser) => {
     }
     newFacultyAllData = newUser[0];
 
-    session.commitTransaction();
-    session.endSession();
+    await session.commitTransaction();
+    await session.endSession();
   } catch (error) {
-    session.abortTransaction();
-    session.endSession();
+    await session.abortTransaction();
+    await session.endSession();
     throw error;
   }
 
